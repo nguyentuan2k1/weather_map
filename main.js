@@ -17,8 +17,13 @@ var iconxx = L.icon({
 //var iconurl = "https://lh3.googleusercontent.com/proxy/mNhHjrTXxoO54NRdrquf4L2eqJa0_aQUvnnL0GzTWAoP9zva1ENOy-wR6ZtG_kX5vF3M1bN344N8uRWzAaT3OybS16gBUAOLeR_MBfCx-H4GYUK9DVyuFzwS9iaek6Syj2JkQKdXwFttlcvLvGhwEfe9OIFJ8Azx5w";
 
 var markerold ;
+var markerfirst ; 
 
 mymap.on('click',(element)=>{
+    if(markerfirst != undefined)
+    {
+        mymap.removeLayer(markerfirst);
+    }
     console.log(element);
     console.log(element.latlng.lat);
     
@@ -28,11 +33,14 @@ mymap.on('click',(element)=>{
         return data.json();
     })
     .then(function (data) {
+      
         if(markerold!= undefined)
         {
             mymap.removeLayer(markerold);
         }
-        console.table(data);
+        
+
+       
         let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
         markerold = marker;
     })
@@ -63,11 +71,13 @@ function success(pos) {
         console.log(data);
         let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
         mymap.setView([crd.latitude, crd.longitude],18);
+        console.log(marker);
+        console.log(mymap);
+        markerfirst = marker;
         // markerold = marker;
     })
     
-    // mapLink.href = `https://www.openstreetmap.org/#map=18/${crd.latitude}/${crd.longitude}`;
-    // mapLink.textContent = `Latitude: ${crd.longitude} °, Longitude: ${crd.longitude} °`;
+   
   };
 
   function error(error)
