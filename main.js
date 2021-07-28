@@ -1,4 +1,4 @@
-var mymap = L.map('mapid').setView([16.0669077, 108.2137987], 8);
+var mymap = L.map('mapid');
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidGVvdmFubWVveHgiLCJhIjoiY2tyNHRpdW53Mno0MDJ2bzhzZXU2OXZhdSJ9.z9bdsi-GlnxmToSg5njRcA', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
    //  maxZoom: 10,
@@ -33,7 +33,7 @@ mymap.on('click',(element)=>{
             mymap.removeLayer(markerold);
         }
         console.table(data);
-        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup("adsasjdh");
+        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
         markerold = marker;
     })
     console.log(mymap);
@@ -42,7 +42,7 @@ mymap.on('click',(element)=>{
 })
 
 
-navigator.geolocation.getCurrentPosition(success);
+navigator.geolocation.getCurrentPosition(success,error);
 
 function success(pos) {
     var crd = pos.coords;
@@ -57,16 +57,21 @@ function success(pos) {
         return data.json();
     })
     .then(function (data) {
-        mymap.eachLayer((layer) => {
-            layer.remove();
-          });
-        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("adsasjdh");
+        // mymap.eachLayer((layer) => {
+        //     layer.remove();
+        //   });
         console.log(data);
-       
+        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
+        mymap.setView([crd.latitude, crd.longitude], 6);
         // markerold = marker;
     })
     
     // mapLink.href = `https://www.openstreetmap.org/#map=18/${crd.latitude}/${crd.longitude}`;
     // mapLink.textContent = `Latitude: ${crd.longitude} °, Longitude: ${crd.longitude} °`;
   };
+
+  function error(error)
+  {
+    mymap.setView([16.0669077, 108.2137987], 8);
+  }
   
