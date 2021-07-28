@@ -57,12 +57,15 @@ function success(pos) {
         return data.json();
     })
     .then(function (data) {
-       
+        mymap.eachLayer((layer) => {
+            layer.remove();
+          });
         let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("adsasjdh");
         console.log(data);
+       
         // markerold = marker;
     })
-  ;
+    
     // mapLink.href = `https://www.openstreetmap.org/#map=18/${crd.latitude}/${crd.longitude}`;
     // mapLink.textContent = `Latitude: ${crd.longitude} °, Longitude: ${crd.longitude} °`;
   };
