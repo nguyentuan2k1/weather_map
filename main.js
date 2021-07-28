@@ -1,7 +1,7 @@
 var mymap = L.map('mapid');
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoidGVvdmFubWVveHgiLCJhIjoiY2tyNHRpdW53Mno0MDJ2bzhzZXU2OXZhdSJ9.z9bdsi-GlnxmToSg5njRcA', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-   //  maxZoom: 10,
+     maxZoom: 10,
     //  zoom:-2,
     id: 'mapbox/streets-v11',
     tileSize: 512,
@@ -10,8 +10,8 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);
 
 var iconxx = L.icon({
-    iconSize:     [30,30],
-    iconUrl: 'https://lh3.googleusercontent.com/proxy/mNhHjrTXxoO54NRdrquf4L2eqJa0_aQUvnnL0GzTWAoP9zva1ENOy-wR6ZtG_kX5vF3M1bN344N8uRWzAaT3OybS16gBUAOLeR_MBfCx-H4GYUK9DVyuFzwS9iaek6Syj2JkQKdXwFttlcvLvGhwEfe9OIFJ8Azx5w'
+    iconSize:     [20,20],
+    iconUrl: 'img/map-origin.svg'
 
 });
 //var iconurl = "https://lh3.googleusercontent.com/proxy/mNhHjrTXxoO54NRdrquf4L2eqJa0_aQUvnnL0GzTWAoP9zva1ENOy-wR6ZtG_kX5vF3M1bN344N8uRWzAaT3OybS16gBUAOLeR_MBfCx-H4GYUK9DVyuFzwS9iaek6Syj2JkQKdXwFttlcvLvGhwEfe9OIFJ8Azx5w";
@@ -62,7 +62,7 @@ function success(pos) {
         //   });
         console.log(data);
         let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
-        mymap.setView([crd.latitude, crd.longitude], 6);
+        mymap.setView([crd.latitude, crd.longitude],18);
         // markerold = marker;
     })
     
