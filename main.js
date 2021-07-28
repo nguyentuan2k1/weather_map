@@ -33,11 +33,37 @@ mymap.on('click',(element)=>{
             mymap.removeLayer(markerold);
         }
         console.table(data);
-        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap)
-        .bindPopup("adsasjdh");
+        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup("adsasjdh");
         markerold = marker;
     })
     console.log(mymap);
        // mymap.fitBounds(marker.getBounds());
 
 })
+
+
+navigator.geolocation.getCurrentPosition(success);
+
+function success(pos) {
+    var crd = pos.coords;
+    
+    console.log('Your current position is:');
+    console.log('Latitude : ' + crd.latitude);
+    console.log('Longitude: ' + crd.longitude);
+    console.log('More or less ' + crd.accuracy + ' meters.');
+    let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+crd.latitude+'&lon='+crd.longitude+'&appid=79301b378464f8229c8cd05137e2f33d';
+    fetch(url)
+    .then(function (data) {
+        return data.json();
+    })
+    .then(function (data) {
+       
+        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("adsasjdh");
+        console.log(data);
+        // markerold = marker;
+    })
+  ;
+    // mapLink.href = `https://www.openstreetmap.org/#map=18/${crd.latitude}/${crd.longitude}`;
+    // mapLink.textContent = `Latitude: ${crd.longitude} °, Longitude: ${crd.longitude} °`;
+  };
+  
