@@ -10,7 +10,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);
 
 var iconxx = L.icon({
-    iconSize:     [20,20],
+    iconSize: [20,20],
     iconUrl: 'img/map-origin.svg'
 
 });
@@ -24,27 +24,25 @@ mymap.on('click',(element)=>{
     {
         mymap.removeLayer(markerfirst);
     }
-    console.log(element);
-    console.log(element.latlng.lat);
+    //let url2 = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=79301b378464f8229c8cd05137e2f33d"
     
-    let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+element.latlng.lat+'&lon='+element.latlng.lng+'&appid=79301b378464f8229c8cd05137e2f33d';
+    let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+element.latlng.lat+'&lon='+element.latlng.lng+'&lang=vi&appid=79301b378464f8229c8cd05137e2f33d';
     fetch(url)
     .then(function (data) {
         return data.json();
     })
     .then(function (data) {
-      
+      console.log(data);
         if(markerold!= undefined)
         {
             mymap.removeLayer(markerold);
         }
-        
-
-       
-        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
+        let weather = data.weather[0].description;
+        let temp = Math.round(data.main.temp - 273.15);
+        let icon = data.weather[0].icon;
+        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'');
         markerold = marker;
     })
-    console.log(mymap);
        // mymap.fitBounds(marker.getBounds());
 
 })
@@ -59,22 +57,20 @@ function success(pos) {
     console.log('Latitude : ' + crd.latitude);
     console.log('Longitude: ' + crd.longitude);
     console.log('More or less ' + crd.accuracy + ' meters.');
-    let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+crd.latitude+'&lon='+crd.longitude+'&appid=79301b378464f8229c8cd05137e2f33d';
+    let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+crd.latitude+'&lon='+crd.longitude+'&lang=vi&appid=79301b378464f8229c8cd05137e2f33d';
     fetch(url)
     .then(function (data) {
         return data.json();
     })
     .then(function (data) {
-        // mymap.eachLayer((layer) => {
-        //     layer.remove();
-        //   });
         console.log(data);
-        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup("Your position is in:"+data.name+"");
+        let weather = data.weather[0].description;
+        let temp = Math.round(data.main.temp - 273.15);
+        let icon = data.weather[0].icon;
+        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'');
         mymap.setView([crd.latitude, crd.longitude],18);
-        console.log(marker);
-        console.log(mymap);
         markerfirst = marker;
-        // markerold = marker;
+       
     })
     
    
@@ -85,3 +81,8 @@ function success(pos) {
     mymap.setView([16.0669077, 108.2137987], 8);
   }
   
+
+  function datatoPopup(weather,temp,icon){
+    let data ='<div style="display:flex; align-items: center;"><div> Weather:'+weather+'<br>Temp:'+temp+'&#186C<br></div><div style="margin-left:0.375rem;padding-left:1rem;text-align:center;border-left:0.0625rem solid black;"><img class="img-weather" src="img/'+icon+'.png"></div></div>'
+    return data;
+}
