@@ -40,8 +40,11 @@ mymap.on('click',(element)=>{
         let weather = data.weather[0].description;
         let temp = Math.round(data.main.temp - 273.15);
         let icon = data.weather[0].icon;
-        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'');
+        let marker = L.marker([element.latlng.lat,element.latlng.lng], { icon: iconxx }).addTo(mymap).bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'').openPopup();        ;
         markerold = marker;
+    //    document.querySelector('.leaflet-pane .leaflet-marker-pane').click;
+
+
     })
        // mymap.fitBounds(marker.getBounds());
 
@@ -67,10 +70,12 @@ function success(pos) {
         let weather = data.weather[0].description;
         let temp = Math.round(data.main.temp - 273.15);
         let icon = data.weather[0].icon;
-        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap).bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'');
+        let marker = L.marker([crd.latitude,crd.longitude], { icon: iconxx }).addTo(mymap);
         mymap.setView([crd.latitude, crd.longitude],18);
         markerfirst = marker;
-       
+        marker.bindPopup('Your position is in:'+data.name+'<br>'+datatoPopup(weather,temp,icon)+'').openPopup();
+
+
     })
     
    
